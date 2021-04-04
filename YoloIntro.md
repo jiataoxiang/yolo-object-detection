@@ -1,6 +1,9 @@
-# CSC413PROJECT
+# YOLO
+
+Reference: https://blog.paperspace.com/how-to-implement-a-yolo-object-detector-in-pytorch/
 
 ### What is YOLO?
+
 Yolo stands for you only look once. It's an object detector that uses features learned by a deep convolutional neural network to detect an object. Before we get out hands dirty with code, we must understand how YOLO works.
 
 Yolo makes uses of only convolutional layers, making it a fully convolutional network. It has 75 convolutional layers, with skip connections and upsampling layers. Norm form of pooling is used, and a convolutional layer with strid 2 is used to downsample the feature maps. This helps in preventing loss of low-level features often attributed to pooling.
@@ -18,6 +21,7 @@ To do that, we divide the input image into a grid of dimension equal to that of 
 Let us consider an example below, where the input image is 416 x x416, and stride of the network is 32. As pointed earlier, the dimensions of the feature map will be 13 x 13. We then divide the input image into 13 x 13 cells.
 
 ### Anchor Boxes
+
 It might make sense to predict the width and the height of the bounding box, but in practice, that leads to unstable gradients during training. Instead, most of the modern object detectors predict log-space transforms, or simply offsets to pre-defined default bounding boxes called anchors.
 
 The bounding box responsible for detecting the dog will be the one whose anchor has the highest IoU (intersection over union loss) with the ground truth box.
