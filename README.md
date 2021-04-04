@@ -16,3 +16,8 @@ This has to do with how YOLO is trained, where only one bounding box is responsi
 To do that, we divide the input image into a grid of dimension equal to that of the final feature map.
 
 Let us consider an example below, where the input image is 416 x x416, and stride of the network is 32. As pointed earlier, the dimensions of the feature map will be 13 x 13. We then divide the input image into 13 x 13 cells.
+
+### Anchor Boxes
+It might make sense to predict the width and the height of the bounding box, but in practice, that leads to unstable gradients during training. Instead, most of the modern object detectors predict log-space transforms, or simply offsets to pre-defined default bounding boxes called anchors.
+
+The bounding box responsible for detecting the dog will be the one whose anchor has the highest IoU (intersection over union loss) with the ground truth box.
