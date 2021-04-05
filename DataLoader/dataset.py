@@ -46,7 +46,7 @@ if __name__ == "__main__":
     
     fig = plt.figure()
     # add axis at position rect
-    ax = fig.add_axes([0,0,1,1])
+    ax = fig.add_axes([0, 0,1,1]) # left, bottom, width, height, which are fraction of figure width height
 
     plt.imshow(image.permute(1, 2, 0))
 
