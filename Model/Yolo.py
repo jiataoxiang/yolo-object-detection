@@ -100,7 +100,7 @@ class Yolov1(nn.Module):
         )
 
 # sanity check
-def test(S=7, B=2, C=20):
+def test(S=7, B=2, C=2):
     model = Yolov1(split_size=S, num_boxes=B, num_classes=C)
     x = torch.randn((2, 3, 448, 448))
     print(model(x).shape)

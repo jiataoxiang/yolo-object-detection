@@ -48,8 +48,21 @@ def displayBox(image, targetLabels):
     
     plt.show()
 
+class Compose(object):
+    def __init__(self, transforms):
+        self.transforms = transforms
+
+    def __call__(self, img, bboxes):
+        for t in self.transforms:
+            img, bboxes = t(img), bboxes
+
+        return img, bboxes
+
+import torchvision.transforms as transforms
+transformer = Compose([transforms.Resize((448, 448)), transforms.ToTensor(),])
+
 if __name__ == "__main__":
     trainPath = pathlib.Path.cwd() / "dataset/train"
-    dataset = MaskDataset(trainPath / "images", trainPath / "labels")
+    dataset = MaskDataset(trainPath / "images", trainPath / "labels", transformer=transformer)
     image, labels, label_matrix = dataset[0]
     displayBox(image, labels)
