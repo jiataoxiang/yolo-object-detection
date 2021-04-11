@@ -43,8 +43,7 @@ LOAD_MODEL = False
 LOAD_MODEL_FILE = "overfit.pth.tar"
 IMG_TRAIN_DIR =  pathlib.Path.cwd() / "dataset/train/images"
 LABEL_TRAIN_DIR =  pathlib.Path.cwd() / "dataset/train/labels"
-IMG_TEST_DIR = pathlib.Path.cwd() / "dataset/test/images"
-LABEL_TEST_DIR =  pathlib.Path.cwd() / "dataset/test/labels"
+
 
 
 class Compose(object):
@@ -97,23 +96,9 @@ def main():
         transformer=transformer,
     )
 
-    test_dataset = MaskDataset(
-        input_dirs_path=IMG_TEST_DIR,
-        target_dirs_path=LABEL_TEST_DIR,
-        transformer=transformer,
-    )
 
     train_loader = DataLoader(
         dataset=train_dataset,
-        batch_size=BATCH_SIZE,
-        num_workers=NUM_WORKERS,
-        pin_memory=PIN_MEMORY,
-        shuffle=True,
-        drop_last=True,
-    )
-
-    test_loader = DataLoader(
-        dataset=test_dataset,
         batch_size=BATCH_SIZE,
         num_workers=NUM_WORKERS,
         pin_memory=PIN_MEMORY,
