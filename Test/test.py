@@ -20,6 +20,7 @@ from util import (
 from torch.utils.data import DataLoader
 from MaskDataset import MaskDataset
 from Yolo import Yolov1
+from pretrainedYolo import pretrainedYolo
 import pathlib
 
 LEARNING_RATE = 2e-5
@@ -53,7 +54,8 @@ def test():
     # Load model
     # get test data
     # predict and draw bounding box
-    model = Yolov1(split_size=7, num_boxes=2, num_classes=2).to(DEVICE)
+    # model = Yolov1(split_size=7, num_boxes=2, num_classes=2).to(DEVICE)
+    model = pretrainedYolo(split_size=7, num_boxes=2, num_classes=2).to(DEVICE)
     optimizer = optim.Adam(
         model.parameters(), lr=LEARNING_RATE, weight_decay=WEIGHT_DECAY
     )
@@ -92,10 +94,10 @@ def test():
     test_data = test_dataset[0]
     # print(test_data)
     # display image
-    for batch_idx, (x, y) in enumerate(train_loader):
+    for batch_idx, (x, y) in enumerate(test_loader):
         x, y = x.to(DEVICE), y.to(DEVICE)
         bboxes = cellboxes_to_boxes(model(x))
-        bboxes = non_max_suppression(bboxes[0], iou_threshold=0.6, threshold=0.5, box_format="midpoint")
+        bboxes = non_max_suppression(bboxes[0], iou_threshold=0.5, threshold=0.4, box_format="midpoint")
         plot_image(x[0].permute(1,2,0).to("cpu"), bboxes)
 
 
