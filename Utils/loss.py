@@ -4,7 +4,7 @@ Implementation of Yolo Loss Function from the original yolo paper
 
 import torch
 import torch.nn as nn
-from util import intersection_over_union
+from util import IoU
 
 
 class YoloLoss(nn.Module):
@@ -36,8 +36,8 @@ class YoloLoss(nn.Module):
         # print(predictions.shape)
 
         # Calculate IoU for the two predicted bounding boxes with target bbox
-        iou_b1 = intersection_over_union(predictions[..., self.C + 1 : self.C + 5], target[..., self.C + 1 : self.C + 5])
-        iou_b2 = intersection_over_union(predictions[..., self.C + 6 : self.C + 10], target[..., self.C + 1 : self.C + 5])
+        iou_b1 = IoU(predictions[..., self.C + 1 : self.C + 5], target[..., self.C + 1 : self.C + 5])
+        iou_b2 = IoU(predictions[..., self.C + 6 : self.C + 10], target[..., self.C + 1 : self.C + 5])
         ious = torch.cat([iou_b1.unsqueeze(0), iou_b2.unsqueeze(0)], dim=0)
 
         # Take the box with highest IoU out of the two prediction

@@ -16,7 +16,9 @@ class pretrainedYolo(nn.Module):
         for name, weights in model.named_parameters():
             if not name.startswith("classifier"):
                 weights.requires_grad = False
-        summary(self.pretrained, (3, 448, 448))
+        # for name, weights in model.named_parameters():
+        #     print(weights.requires_grad)
+        # summary(self.pretrained, (3, 448, 448))
     
     def forward(self, x):
         return self.pretrained(x)

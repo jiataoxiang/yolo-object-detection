@@ -8,11 +8,11 @@ import torch
 import torch.optim as optim
 import torchvision.transforms as transforms
 from util import (
-    non_max_suppression,
-    mean_average_precision,
-    intersection_over_union,
+    nonMaxSuppression,
+    MeanAveragePrecision,
+    IoU,
     cellboxes_to_boxes,
-    get_bboxes,
+    getBoundingBoxes,
     plot_image,
     save_checkpoint,
     load_checkpoint,
@@ -97,7 +97,7 @@ def test():
     for batch_idx, (x, y) in enumerate(test_loader):
         x, y = x.to(DEVICE), y.to(DEVICE)
         bboxes = cellboxes_to_boxes(model(x))
-        bboxes = non_max_suppression(bboxes[0], iou_threshold=0.5, threshold=0.4, box_format="midpoint")
+        bboxes = nonMaxSuppression(bboxes[0], iou_threshold=0.5, threshold=0.4, box_format="midpoint")
         plot_image(x[0].permute(1,2,0).to("cpu"), bboxes)
 
 

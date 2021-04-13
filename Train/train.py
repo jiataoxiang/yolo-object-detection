@@ -17,11 +17,11 @@ from torch.utils.data import DataLoader
 from MaskDataset import MaskDataset
 from Yolo import Yolov1
 from util import (
-    non_max_suppression,
-    mean_average_precision,
-    intersection_over_union,
+    nonMaxSuppression,
+    MeanAveragePrecision,
+    IoU,
     cellboxes_to_boxes,
-    get_bboxes,
+    getBoundingBoxes,
     plot_image,
     save_checkpoint,
     load_checkpoint,
@@ -111,19 +111,19 @@ def main():
         #    x = x.to(DEVICE)
         #    for idx in range(8):
         #        bboxes = cellboxes_to_boxes(model(x))
-        #        bboxes = non_max_suppression(bboxes[idx], iou_threshold=0.5, threshold=0.4, box_format="midpoint")
+        #        bboxes = nonMaxSuppression(bboxes[idx], iou_threshold=0.5, threshold=0.4, box_format="midpoint")
         #        plot_image(x[idx].permute(1,2,0).to("cpu"), bboxes)
 
         #    import sys
         #    sys.exit()
         
 
-        pred_boxes, target_boxes = get_bboxes(
-            train_loader, model, iou_threshold=0.5, threshold=0.4
+        pred_boxes, target_boxes = getBoundingBoxes(
+            train_loader, model, IoUThreshold=0.5, Probabilitythreshold=0.4
         )
 
-        mean_avg_prec = mean_average_precision(
-            pred_boxes, target_boxes, iou_threshold=0.5, box_format="midpoint"
+        mean_avg_prec = MeanAveragePrecision(
+            pred_boxes, target_boxes, IoUThreshold=0.5
         )
         print(f"Train mAP: {mean_avg_prec}")
 
