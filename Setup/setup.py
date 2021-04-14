@@ -11,11 +11,11 @@ from util import (
     nonMaxSuppression,
     MeanAveragePrecision,
     IoU,
-    cellboxes_to_boxes,
+    cellBoxesToBoxes,
     getBoundingBoxes,
-    plot_image,
-    save_checkpoint,
-    load_checkpoint,
+    plotImage,
+    saveCheckpoint,
+    loadCheckpoint,
 )
 
 print(IoU)

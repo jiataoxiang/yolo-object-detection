@@ -51,16 +51,17 @@ def IoU(predictions, targetLabels):
 
 
 def EliminateLowerProbability(boundingBoxes, threshold):
-	"""
-		Helper for non max suppression
-		Eliminate bounding boxes if boundingBoxes[compareIndex] value is less than threshold
-	"""
-	index = 0
-	while index < len(boundingBoxes):
-		if boundingBoxes[index][1] < threshold:
-			boundingBoxes.pop(index)
-		index += 1
-	return boundingBoxes
+    """
+        Helper for non max suppression
+        Eliminate bounding boxes if boundingBoxes[compareIndex] value is less than threshold
+    """
+    index = 0
+    while index < len(boundingBoxes):
+        if boundingBoxes[index][1] < threshold:
+            boundingBoxes.pop(index)
+        else: 
+            index += 1
+    return boundingBoxes
 
 
 def EliminateDuplicateBox(boundingBoxes, threshold):
@@ -193,7 +194,7 @@ def MeanAveragePrecision(
     return sum(averagePrecisions) / len(averagePrecisions)
 
 
-def plot_image(image, boxes):
+def plotImage(image, boxes):
     """Plots predicted bounding boxes on the image"""
     im = np.array(image)
     height, width, _ = im.shape
@@ -245,8 +246,8 @@ def getBoundingBoxes(loader, model, IoUThreshold, Probabilitythreshold, device="
         batch_size = image.shape[0]
 
         # convert label matrices to correct format
-        targetBox = cellboxes_to_boxes(labels)
-        predictionBox = cellboxes_to_boxes(predictions)
+        targetBox = cellBoxesToBoxes(labels)
+        predictionBox = cellBoxesToBoxes(predictions)
 
         for i in range(batch_size):
             # get boxes after non max suppression
@@ -266,7 +267,7 @@ def getBoundingBoxes(loader, model, IoUThreshold, Probabilitythreshold, device="
 
 
 
-def convert_cellboxes(predictions, S=7):
+def BoxesToCellBoxes(predictions, S=7):
     """
     Converts bounding boxes output from Yolo with
     an image split size of S into entire image ratios
@@ -303,8 +304,8 @@ def convert_cellboxes(predictions, S=7):
     return converted_preds
 
 
-def cellboxes_to_boxes(out, S=7):
-    converted_pred = convert_cellboxes(out).reshape(out.shape[0], S * S, -1)
+def cellBoxesToBoxes(out, S=7):
+    converted_pred = BoxesToCellBoxes(out).reshape(out.shape[0], S * S, -1)
     converted_pred[..., 0] = converted_pred[..., 0].long()
     all_bboxes = []
 
@@ -317,12 +318,12 @@ def cellboxes_to_boxes(out, S=7):
 
     return all_bboxes
 
-def save_checkpoint(state, filename="my_checkpoint.pth.tar"):
+def saveCheckpoint(state, filename="my_checkpoint.pth.tar"):
     print("=> Saving checkpoint")
     torch.save(state, filename)
 
 
-def load_checkpoint(checkpoint, model, optimizer):
+def loadCheckpoint(checkpoint, model, optimizer):
     print("=> Loading checkpoint")
     model.load_state_dict(checkpoint["state_dict"])
     optimizer.load_state_dict(checkpoint["optimizer"])

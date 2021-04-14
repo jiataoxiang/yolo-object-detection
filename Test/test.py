@@ -11,11 +11,11 @@ from util import (
     nonMaxSuppression,
     MeanAveragePrecision,
     IoU,
-    cellboxes_to_boxes,
+    cellBoxesToBoxes,
     getBoundingBoxes,
-    plot_image,
-    save_checkpoint,
-    load_checkpoint,
+    plotImage,
+    saveCheckpoint,
+    loadCheckpoint,
 )
 from torch.utils.data import DataLoader
 from MaskDataset import MaskDataset
@@ -59,7 +59,7 @@ def test():
     optimizer = optim.Adam(
         model.parameters(), lr=LEARNING_RATE, weight_decay=WEIGHT_DECAY
     )
-    load_checkpoint(torch.load(LOAD_MODEL_FILE), model, optimizer)
+    loadCheckpoint(torch.load(LOAD_MODEL_FILE), model, optimizer)
 
     test_dataset = MaskDataset(
         input_dirs_path=IMG_TEST_DIR,
@@ -94,11 +94,11 @@ def test():
     test_data = test_dataset[0]
     # print(test_data)
     # display image
-    for batch_idx, (x, y) in enumerate(test_loader):
+    for batch_idx, (x, y) in enumerate(train_loader):
         x, y = x.to(DEVICE), y.to(DEVICE)
-        bboxes = cellboxes_to_boxes(model(x))
-        bboxes = nonMaxSuppression(bboxes[0], iou_threshold=0.5, threshold=0.4, box_format="midpoint")
-        plot_image(x[0].permute(1,2,0).to("cpu"), bboxes)
+        bboxes = cellBoxesToBoxes(model(x))
+        bboxes = nonMaxSuppression(bboxes[0], 0.5, 0.4)
+        plotImage(x[0].permute(1,2,0).to("cpu"), bboxes)
 
 
 if __name__ == "__main__":

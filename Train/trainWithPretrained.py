@@ -22,11 +22,11 @@ from util import (
     nonMaxSuppression,
     MeanAveragePrecision,
     IoU,
-    cellboxes_to_boxes,
+    cellBoxesToBoxes,
     getBoundingBoxes,
-    plot_image,
-    save_checkpoint,
-    load_checkpoint,
+    plotImage,
+    saveCheckpoint,
+    loadCheckpoint,
 )
 from loss import YoloLoss
 
@@ -91,7 +91,7 @@ def main():
     loss_fn = YoloLoss()
 
     if LOAD_MODEL:
-        load_checkpoint(torch.load(LOAD_MODEL_FILE), model, optimizer)
+        loadCheckpoint(torch.load(LOAD_MODEL_FILE), model, optimizer)
 
     train_dataset = MaskDataset(
         input_dirs_path=IMG_TRAIN_DIR,
@@ -113,9 +113,9 @@ def main():
         # for x, y in train_loader:
         #    x = x.to(DEVICE)
         #    for idx in range(8):
-        #        bboxes = cellboxes_to_boxes(model(x))
+        #        bboxes = cellBoxesToBoxes(model(x))
         #        bboxes = nonMaxSuppression(bboxes[idx], iou_threshold=0.5, threshold=0.4, box_format="midpoint")
-        #        plot_image(x[idx].permute(1,2,0).to("cpu"), bboxes)
+        #        plotImage(x[idx].permute(1,2,0).to("cpu"), bboxes)
 
         #    import sys
         #    sys.exit()
@@ -135,7 +135,7 @@ def main():
                "state_dict": model.state_dict(),
                "optimizer": optimizer.state_dict(),
            }
-           save_checkpoint(checkpoint, filename=LOAD_MODEL_FILE)
+           saveCheckpoint(checkpoint, filename=LOAD_MODEL_FILE)
            import time
            time.sleep(10)
 
