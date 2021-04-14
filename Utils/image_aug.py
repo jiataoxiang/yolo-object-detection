@@ -1,4 +1,6 @@
 import os
+import shutil
+import random
 import numpy as np
 from PIL import Image, ImageOps
 
@@ -62,4 +64,48 @@ def aug_image():
             
             flipped = ImageOps.mirror(cropped)
             flipped.save(image_path+file_name[:-4]+"_cropped"+str(100-int(keep_rate*100))+"_flipped.jpg")
+           
             
+
+source_label_path = './train/labels/'
+source_image_path = './train/images/'
+destination_label_path = './test/labels/'
+destination_image_path = './test/images/'
+
+# keep train_ratio of the data in the source folders
+# move 1-train_ratio of the data to the destination folders
+def split_data(train_ratio=0.8):
+    file_names = [f[:-4] for f in os.listdir(source_label_path) if f[-4:] == '.txt']
+    random.shuffle(file_names)
+    split_index = int(len(file_names) * train_ratio)
+    
+    test_file_names = file_names[split_index:]
+    for file_name in test_file_names:
+        shutil.move(source_label_path+file_name+'.txt', destination_label_path+file_name+'.txt')
+        shutil.move(source_image_path+file_name+'.jpg', destination_image_path+file_name+'.jpg')
+        
+
+if __name__ == "__main__":
+    split_data(train_ratio=0.8)
+          
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
