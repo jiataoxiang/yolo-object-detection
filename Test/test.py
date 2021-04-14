@@ -94,11 +94,18 @@ def test():
     test_data = test_dataset[0]
     # print(test_data)
     # display image
-    for batch_idx, (x, y) in enumerate(train_loader):
-        x, y = x.to(DEVICE), y.to(DEVICE)
-        bboxes = cellBoxesToBoxes(model(x))
-        bboxes = nonMaxSuppression(bboxes[0], 0.5, 0.4)
-        plotImage(x[0].permute(1,2,0).to("cpu"), bboxes)
+    # for batch_idx, (x, y) in enumerate(test_loader):
+        # x, y = x.to(DEVICE), y.to(DEVICE)
+    pred_boxes, target_boxes = getBoundingBoxes(
+        train_loader, model, IoUThreshold=0.5, Probabilitythreshold=0.4
+    )
+    mean_avg_prec = MeanAveragePrecision(
+        pred_boxes, target_boxes, IoUThreshold=0.5
+    )
+    print(f"Train mAP: {mean_avg_prec}")
+        # bboxes = cellBoxesToBoxes(model(x))
+        # bboxes = nonMaxSuppression(bboxes[0], 0.5, 0.4)
+        # plotImage(x[0].permute(1,2,0).to("cpu"), bboxes)
 
 
 if __name__ == "__main__":
