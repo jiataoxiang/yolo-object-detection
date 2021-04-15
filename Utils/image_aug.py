@@ -5,15 +5,17 @@ import numpy as np
 from PIL import Image, ImageOps
 
 
-label_path = './train/labels/'
-image_path = './train/images/'
+source_label_path = './train/labels/'
+source_image_path = './train/images/'
+destination_label_path = './test/labels/'
+destination_image_path = './test/images/'
 # ratio kept for each axis
 keep_rates = [0.9,
               0.8,
               0.7]
 
 
-label_file_names = [f for f in os.listdir(label_path) if f[-4:] == '.txt']
+label_file_names = [f for f in os.listdir(source_label_path) if f[-4:] == '.txt']
 
 def flip_label(label):
     flipped = label.copy()
@@ -33,26 +35,26 @@ def crop_label(label, keep_rate):
 
 def aug_label():
     for file_name in label_file_names:
-        label = np.loadtxt(label_path + file_name)
+        label = np.loadtxt(source_label_path + file_name)
         label = label.reshape((-1, 5))
         flipped = flip_label(label)
-        np.savetxt(label_path+file_name[:-4]+"_flipped.txt", flipped, fmt="%1.18f")
+        np.savetxt(source_label_path+file_name[:-4]+"_flipped.txt", flipped, fmt="%1.18f")
     
         for keep_rate in keep_rates:
             cropped = crop_label(label, keep_rate)
-            np.savetxt(label_path+file_name[:-4]+"_cropped"+str(100-int(keep_rate*100))+".txt", cropped, fmt="%1.18f")
+            np.savetxt(source_label_path+file_name[:-4]+"_cropped"+str(100-int(keep_rate*100))+".txt", cropped, fmt="%1.18f")
             
             flipped = flip_label(cropped)
-            np.savetxt(label_path+file_name[:-4]+"_cropped"+str(100-int(keep_rate*100))+"_flipped.txt", flipped, fmt="%1.18f")
+            np.savetxt(source_label_path+file_name[:-4]+"_cropped"+str(100-int(keep_rate*100))+"_flipped.txt", flipped, fmt="%1.18f")
 
 
-image_file_names = [f for f in os.listdir(image_path) if f[-4:] == '.jpg']
+image_file_names = [f for f in os.listdir(source_image_path) if f[-4:] == '.jpg']
 
 def aug_image():
     for file_name in image_file_names:
-        image = Image.open(image_path + file_name)
+        image = Image.open(source_image_path + file_name)
         flipped = ImageOps.mirror(image)
-        flipped.save(image_path+file_name[:-4]+"_flipped.jpg")
+        flipped.save(source_image_path+file_name[:-4]+"_flipped.jpg")
     
         for keep_rate in keep_rates:
             left = round(image.size[0] * (1-keep_rate)/2)
@@ -60,17 +62,11 @@ def aug_image():
             right = image.size[0] - left
             bottom = image.size[1] - top
             cropped = image.crop((left, top, right, bottom))
-            cropped.save(image_path+file_name[:-4]+"_cropped"+str(100-int(keep_rate*100))+".jpg")
+            cropped.save(source_image_path+file_name[:-4]+"_cropped"+str(100-int(keep_rate*100))+".jpg")
             
             flipped = ImageOps.mirror(cropped)
-            flipped.save(image_path+file_name[:-4]+"_cropped"+str(100-int(keep_rate*100))+"_flipped.jpg")
-           
-            
+            flipped.save(source_image_path+file_name[:-4]+"_cropped"+str(100-int(keep_rate*100))+"_flipped.jpg")
 
-source_label_path = './train/labels/'
-source_image_path = './train/images/'
-destination_label_path = './test/labels/'
-destination_image_path = './test/images/'
 
 # keep train_ratio of the data in the source folders
 # move 1-train_ratio of the data to the destination folders
@@ -86,6 +82,8 @@ def split_data(train_ratio=0.8):
         
 
 if __name__ == "__main__":
+    aug_label()
+    aug_image()
     split_data(train_ratio=0.8)
           
     
