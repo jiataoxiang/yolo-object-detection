@@ -1,8 +1,8 @@
 import torch
+from torchvision import models
 
 
 if __name__ == "__main__":
-    predictions = torch.tensor([[1, 2], [3, 4]])
-
-    print(predictions[..., 1:2])
-    print(predictions[..., 1].unsqueeze(-1))
+    vgg16 = models.vgg16(pretrained=True)
+    models = torch.nn.Sequential(*(list(vgg16.children())[:-1]))
+    print(models)

@@ -13,7 +13,7 @@ class pretrainedYolo(nn.Module):
         self.fcs = self._create_fcs(**kwargs)
         # remove classifier and add our own classifier
         self.pretrained.classifier = self.fcs
-        for name, weights in model.named_parameters():
+        for name, weights in self.pretrained.named_parameters():
             if not name.startswith("classifier"):
                 weights.requires_grad = False
         # for name, weights in model.named_parameters():

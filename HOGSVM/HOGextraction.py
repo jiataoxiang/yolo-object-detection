@@ -125,13 +125,13 @@ def plot_HOG(HOG_hist, tao, orientations_x, orientations_y):
 # plot_HOG(HOG_hist, tao, orientations_x, orientations_y)
 
 def getFlattenedHOGFeatures(image):
-    # image [batch, channel, width, height]
-    flattened = []
+    # image [batch, channel, width, height] tensor
+    flattened = torch.tensor([])
     batch_size = image.shape[0]
     channel = image.shape[1]
     for i in range(batch_size):
         for j in range(channel):
-            imageLayer = image[i, j, ...].numpy()
+            imageLayer = image[i, j, ...].cpu().numpy()
             s_magnitude, s_theta = gradient_and_orientation(imageLayer)
             low_threshold = 20
             s_magnitude = np.where(s_magnitude < low_threshold, 0, s_magnitude)
@@ -139,14 +139,19 @@ def getFlattenedHOGFeatures(image):
             cropped, grid_size_r, grid_size_c = crop_image(imageLayer, tao)
             theta = s_theta % 180
             HOG_hist = getHOG(imageLayer, s_magnitude, theta, grid_size_r, grid_size_c, tao)
-    return torch.tensor(HOG_hist).flatten(start_dim=0, end_dim=-1)
+            HOG_hist = torch.tensor(HOG_hist).flatten(start_dim=0, end_dim=-1)
+            flattened = torch.cat((flattened, HOG_hist))
+    return flattened.to(torch.long)
 
 if __name__ == "__main__":
-    inputImage = Image.open("./dataset/train/images/-1x-1_jpg.rf.69d9b61e3cdb8a9047dad25099fcc8ef.jpg")
-    inputImage = ToTensor()(inputImage)
-    inputImage = inputImage.unsqueeze(0)
-    print(inputImage.shape)
+    # inputImage = Image.open("./dataset/train/images/-1x-1_jpg.rf.69d9b61e3cdb8a9047dad25099fcc8ef.jpg")
+    # inputImage = ToTensor()(inputImage)
+    # inputImage = inputImage.unsqueeze(0)
+    # print(inputImage.shape)
+    inputImage = torch.zeros((1, 3, 448, 448))
     HOG_hist = getFlattenedHOGFeatures(inputImage)
     print(HOG_hist.shape)
     # orientations_x, orientations_y = compute_orientations()
     # plot_HOG(HOG_hist, tao, orientations_x, orientations_y)
+
+    # 54450 features

@@ -24,8 +24,10 @@ class MaskDataset(Dataset):
         return len(self.input_dirs)
 
     def __getitem__(self, index):
-        inputImage = Image.open(self.input_dirs_path / self.input_dirs[index])
-        targetFile = open(self.target_dirs_path / self.target_dirs[index])
+        imageName = self.input_dirs[index]
+        prefix = imageName[:-4]
+        inputImage = Image.open(self.input_dirs_path / imageName)
+        targetFile = open(self.target_dirs_path / (prefix + ".txt"))
         targets = []
         for line in targetFile:
             targets.append(line.strip().split())

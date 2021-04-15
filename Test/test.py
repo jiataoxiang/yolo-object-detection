@@ -21,6 +21,7 @@ from torch.utils.data import DataLoader
 from MaskDataset import MaskDataset
 from Yolo import Yolov1
 from pretrainedYolo import pretrainedYolo
+from pretrainedYoloWithHOG import pretrainedYoloWithHOG
 import pathlib
 
 LEARNING_RATE = 2e-5
@@ -56,6 +57,7 @@ def test():
     # predict and draw bounding box
     # model = Yolov1(split_size=7, num_boxes=2, num_classes=2).to(DEVICE)
     model = pretrainedYolo(split_size=7, num_boxes=2, num_classes=2).to(DEVICE)
+    # model = pretrainedYoloWithHOG(split_size=7, num_boxes=2, num_classes=2).to(DEVICE)
     optimizer = optim.Adam(
         model.parameters(), lr=LEARNING_RATE, weight_decay=WEIGHT_DECAY
     )
