@@ -7,6 +7,8 @@ sys.path.insert(0, os.path.join(os.path.curdir, "Utils"))
 sys.path.insert(0, os.path.join(os.path.curdir, "DataLoader"))
 sys.path.insert(0, os.path.join(os.path.curdir, "Model"))
 
+import numpy as np
+import matplotlib.pyplot as plt
 import pathlib
 import torch
 import torchvision.transforms as transforms
@@ -38,11 +40,11 @@ LEARNING_RATE = 2e-5
 DEVICE = "cuda" if torch.cuda.is_available else "cpu"
 BATCH_SIZE = 4 # 64 in original paper but I don't have that much vram, grad accum?
 WEIGHT_DECAY = 0
-EPOCHS = 100
+EPOCHS = 40
 NUM_WORKERS = 1
 PIN_MEMORY = True
 LOAD_MODEL = False
-LOAD_MODEL_FILE = "overfit.pth.tar"
+LOAD_MODEL_FILE = "pretrainedYolo.pth.tar"
 IMG_TRAIN_DIR =  pathlib.Path.cwd() / "dataset/train/images"
 LABEL_TRAIN_DIR =  pathlib.Path.cwd() / "dataset/train/labels"
 
@@ -80,6 +82,7 @@ def train_fn(train_loader, model, optimizer, loss_fn):
         del x, y, out, loss
 
     print(f"Mean loss was {sum(mean_loss)/len(mean_loss)}")
+    return sum(mean_loss)/len(mean_loss)
 
 
 def main():
@@ -108,7 +111,8 @@ def main():
         shuffle=True,
         drop_last=True,
     )
-
+    mAPs = []
+    losses = []
     for epoch in range(EPOCHS):
         # for x, y in train_loader:
         #    x = x.to(DEVICE)
@@ -128,9 +132,12 @@ def main():
         mean_avg_prec = MeanAveragePrecision(
             pred_boxes, target_boxes, IoUThreshold=0.5
         )
+
+        mAPs.append(mean_avg_prec)
+        
         print(f"Train mAP: {mean_avg_prec}")
 
-        if mean_avg_prec > 0.9:
+        if mean_avg_prec > 0.7:
            checkpoint = {
                "state_dict": model.state_dict(),
                "optimizer": optimizer.state_dict(),
@@ -140,7 +147,19 @@ def main():
            time.sleep(10)
 
         # train for a single step
-        train_fn(train_loader, model, optimizer, loss_fn)
+        loss = train_fn(train_loader, model, optimizer, loss_fn)
+        losses.append(loss)
+
+    
+    plt.plot(np.arange(epoch + 1), np.array(mAPs), "b")
+    plt.xlabel("Epoch")
+    plt.ylabel("mAP")
+    plt.savefig("trainWithPretrainedmAP.jpg")
+
+    plt.plot(np.arange(epoch + 1), np.array(losses), "b")
+    plt.xlabel("Epoch")
+    plt.ylabel("mean loss")
+    plt.savefig("trainWithPretrainedLoss.jpg")
 
 
 if __name__ == "__main__":

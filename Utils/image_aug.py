@@ -5,10 +5,10 @@ import numpy as np
 from PIL import Image, ImageOps
 
 
-source_label_path = './train/labels/'
-source_image_path = './train/images/'
-destination_label_path = './test/labels/'
-destination_image_path = './test/images/'
+source_label_path = './dataset/train/labels/'
+source_image_path = './dataset/train/images/'
+destination_label_path = './dataset/test/labels/'
+destination_image_path = './dataset/test/images/'
 # ratio kept for each axis
 keep_rates = [0.9,
               0.8,

@@ -7,6 +7,8 @@ sys.path.insert(0, os.path.join(os.path.curdir, "Utils"))
 sys.path.insert(0, os.path.join(os.path.curdir, "DataLoader"))
 sys.path.insert(0, os.path.join(os.path.curdir, "Model"))
 
+import numpy as np
+import matplotlib.pyplot as plt
 import pathlib
 import torch
 import torchvision.transforms as transforms
@@ -108,7 +110,7 @@ def main():
         shuffle=True,
         drop_last=True,
     )
-
+    mAPs = []
     for epoch in range(EPOCHS):
         # for x, y in train_loader:
         #    x = x.to(DEVICE)
@@ -119,7 +121,6 @@ def main():
 
         #    import sys
         #    sys.exit()
-        print("epoch ", epoch)
 
         pred_boxes, target_boxes = getBoundingBoxes(
             train_loader, model, IoUThreshold=0.5, Probabilitythreshold=0.4
@@ -128,6 +129,9 @@ def main():
         mean_avg_prec = MeanAveragePrecision(
             pred_boxes, target_boxes, IoUThreshold=0.5
         )
+
+        mAPs.append(mean_avg_prec)
+        
         print(f"Train mAP: {mean_avg_prec}")
 
         if mean_avg_prec > 0.9:
@@ -141,7 +145,10 @@ def main():
 
         # train for a single step
         train_fn(train_loader, model, optimizer, loss_fn)
-
+    plt.plot(np.arange(epoch), np.array(mAPs), "b")
+    plt.xlabel("Epoch")
+    plt.ylabel("mAP")
+    plt.savefig("trainWithHOG.jpg")
 
 if __name__ == "__main__":
     main()
