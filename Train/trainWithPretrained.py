@@ -114,17 +114,7 @@ def main():
     mAPs = []
     losses = []
     for epoch in range(EPOCHS):
-        # for x, y in train_loader:
-        #    x = x.to(DEVICE)
-        #    for idx in range(8):
-        #        bboxes = cellBoxesToBoxes(model(x))
-        #        bboxes = nonMaxSuppression(bboxes[idx], iou_threshold=0.5, threshold=0.4, box_format="midpoint")
-        #        plotImage(x[idx].permute(1,2,0).to("cpu"), bboxes)
-
-        #    import sys
-        #    sys.exit()
         
-
         pred_boxes, target_boxes = getBoundingBoxes(
             train_loader, model, IoUThreshold=0.5, Probabilitythreshold=0.4
         )

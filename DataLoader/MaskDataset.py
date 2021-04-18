@@ -14,6 +14,8 @@ class MaskDataset(Dataset):
         self.input_dirs_path = input_dirs_path
         self.target_dirs_path = target_dirs_path
         self.input_dirs = os.listdir(input_dirs_path)
+        # if len(self.input_dirs) > 300:
+        #     self.input_dirs = self.input_dirs[:300]
         self.target_dirs = os.listdir(target_dirs_path)
         self.transformer = transformer
         self.S = S

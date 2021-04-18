@@ -31,7 +31,7 @@ WEIGHT_DECAY = 0
 EPOCHS = 100
 NUM_WORKERS = 1
 PIN_MEMORY = True
-LOAD_MODEL_FILE = "overfit.pth.tar"
+LOAD_MODEL_FILE = "Yolo.pth.tar"
 IMG_TEST_DIR = pathlib.Path.cwd() / "dataset/test/images"
 LABEL_TEST_DIR =  pathlib.Path.cwd() / "dataset/test/labels"
 
@@ -55,8 +55,8 @@ def test():
     # Load model
     # get test data
     # predict and draw bounding box
-    # model = Yolov1(split_size=7, num_boxes=2, num_classes=2).to(DEVICE)
-    model = pretrainedYolo(split_size=7, num_boxes=2, num_classes=2).to(DEVICE)
+    model = Yolov1(split_size=7, num_boxes=2, num_classes=2).to(DEVICE)
+    # model = pretrainedYolo(split_size=7, num_boxes=2, num_classes=2).to(DEVICE)
     # model = pretrainedYoloWithHOG(split_size=7, num_boxes=2, num_classes=2).to(DEVICE)
     optimizer = optim.Adam(
         model.parameters(), lr=LEARNING_RATE, weight_decay=WEIGHT_DECAY
@@ -99,12 +99,12 @@ def test():
     # for batch_idx, (x, y) in enumerate(test_loader):
         # x, y = x.to(DEVICE), y.to(DEVICE)
     pred_boxes, target_boxes = getBoundingBoxes(
-        train_loader, model, IoUThreshold=0.5, Probabilitythreshold=0.4
+        test_loader, model, IoUThreshold=0.5, Probabilitythreshold=0.4
     )
     mean_avg_prec = MeanAveragePrecision(
         pred_boxes, target_boxes, IoUThreshold=0.5
     )
-    print(f"Train mAP: {mean_avg_prec}")
+    print(f"Test mAP: {mean_avg_prec}")
         # bboxes = cellBoxesToBoxes(model(x))
         # bboxes = nonMaxSuppression(bboxes[0], 0.5, 0.4)
         # plotImage(x[0].permute(1,2,0).to("cpu"), bboxes)
