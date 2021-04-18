@@ -26,3 +26,11 @@ Run `python ./Train/trainWithHOG.py` to train with Yolo HOG model
 
 You can specify the path to store the model by change `LOAD_MODEL_FILE` attribute  
 
+### Test Model
+
+make sure you are in the /path/to/CSC413PROJECT directory
+
+Run `python ./Test/test.py` to run test file, and here are several attribute you need to know.
+
+`LOAD_MODEL_FILE`
+

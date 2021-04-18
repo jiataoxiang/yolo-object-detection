@@ -40,8 +40,7 @@ WEIGHT_DECAY = 0
 EPOCHS = 40
 NUM_WORKERS = 1
 PIN_MEMORY = True
-LOAD_MODEL = False
-LOAD_MODEL_FILE = "YoloWithHOG.pth.tar"
+SAVE_MODEL_FILE = "YoloWithHOG.pth.tar"
 IMG_TRAIN_DIR =  pathlib.Path.cwd() / "dataset/train/images"
 LABEL_TRAIN_DIR =  pathlib.Path.cwd() / "dataset/train/labels"
 
@@ -90,9 +89,6 @@ def main():
     )
     loss_fn = YoloLoss()
 
-    if LOAD_MODEL:
-        loadCheckpoint(torch.load(LOAD_MODEL_FILE), model, optimizer)
-
     train_dataset = MaskDataset(
         input_dirs_path=IMG_TRAIN_DIR,
         target_dirs_path=LABEL_TRAIN_DIR,
@@ -128,7 +124,7 @@ def main():
                "state_dict": model.state_dict(),
                "optimizer": optimizer.state_dict(),
            }
-           saveCheckpoint(checkpoint, filename=LOAD_MODEL_FILE)
+           saveCheckpoint(checkpoint, filename=SAVE_MODEL_FILE)
            import time
            time.sleep(10)
 
