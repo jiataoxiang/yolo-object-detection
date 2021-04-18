@@ -30,7 +30,7 @@ In <root>/Util/image_aug.py, the ratio trimed of the new images can be modified 
 
 ### Train Model
 
-make sure you to run under the directory /path/to/CSC413PROJECT 
+make sure to run under the directory /path/to/CSC413PROJECT 
 
 Run `python ./Train/train.py` to train with Yolo model
 
@@ -44,7 +44,7 @@ You can specify the path to store the model by change `SAVE_MODEL_FILE` attribut
 
 ### Test Model
 
-make sure you to run under the directory /path/to/CSC413PROJECT  
+make sure to run under the directory /path/to/CSC413PROJECT  
 
 Run `python ./Test/test.py` to run test file, and here are several attribute you need to know.
 
