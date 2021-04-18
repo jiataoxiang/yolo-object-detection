@@ -1,6 +1,6 @@
 import os
 import sys
-sys.path.insert(0, os.path.join(os.path.curdir, "HOGSVM"))
+sys.path.insert(0, os.path.join(os.path.curdir, "HOG"))
 
 import torch
 import torch.nn as nn

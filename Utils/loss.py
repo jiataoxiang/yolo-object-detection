@@ -1,5 +1,7 @@
 """
 Implementation of Yolo Loss Function from the original yolo paper
+Notice that this code is adapted from github:https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/object_detection/YOLO/loss.py
+With minor modification
 """
 
 import torch

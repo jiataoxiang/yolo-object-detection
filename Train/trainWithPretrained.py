@@ -1,6 +1,3 @@
-"""
-Main file for training Yolo model on Pascal VOC dataset
-"""
 import sys
 import os
 sys.path.insert(0, os.path.join(os.path.curdir, "Utils"))
@@ -114,7 +111,7 @@ def main():
     mAPs = []
     losses = []
     for epoch in range(EPOCHS):
-        
+
         pred_boxes, target_boxes = getBoundingBoxes(
             train_loader, model, IoUThreshold=0.5, Probabilitythreshold=0.4
         )
