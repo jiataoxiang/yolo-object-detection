@@ -13,6 +13,7 @@ destination_image_path = './dataset/test/images/'
 keep_rates = [0.9,
               0.8,
               0.7]
+train_ratio = 0.8
 
 
 label_file_names = [f for f in os.listdir(source_label_path) if f[-4:] == '.txt']
@@ -84,7 +85,7 @@ def split_data(train_ratio=0.8):
 if __name__ == "__main__":
     aug_label()
     aug_image()
-    split_data(train_ratio=0.8)
+    split_data(train_ratio=train_ratio)
           
     
     
