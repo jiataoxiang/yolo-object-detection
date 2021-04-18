@@ -77,21 +77,6 @@ def test():
         shuffle=True,
         drop_last=True,
     )
-    train_dataset = MaskDataset(
-        input_dirs_path=IMG_TRAIN_DIR,
-        target_dirs_path=LABEL_TRAIN_DIR,
-        transformer=transformer,
-    )
-
-
-    train_loader = DataLoader(
-        dataset=train_dataset,
-        batch_size=BATCH_SIZE,
-        num_workers=NUM_WORKERS,
-        pin_memory=PIN_MEMORY,
-        shuffle=True,
-        drop_last=True,
-    )
     
     test_data = test_dataset[0]
     # print(test_data)
