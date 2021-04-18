@@ -8,11 +8,12 @@ class ConvBlock(nn.Module):
         super(ConvBlock, self).__init__()
         
         self.ConvLayer = nn.Conv2d(in_channels, out_channels, kernel_size, stride, padding)
-        # self.BNLayer = nn.BatchNorm2d(out_channels)
+        self.BNLayer = nn.BatchNorm2d(out_channels)
         self.ReluLayer = nn.LeakyReLU(negative_slope, inplace=True)
         
     def forward(self, input):
         output = self.ConvLayer(input)
+        output = self.BNLayer(output)
         output = self.ReluLayer(output)
         return output
     
@@ -63,8 +64,9 @@ class YoloV2mod(nn.Module):
         
         self.postConcat = nn.Sequential(
                 ConvBlock(1024+256, 1024, 3, 1, 1),
-                nn.Conv2d(1024, 5*num_boxes+num_classes, 1, 1, 0, bias=False),
-                nn.Flatten()
+                ConvBlock(1024, 5*num_boxes+num_classes, 1, 1, 0),
+                nn.Flatten(),
+                nn.Linear(7*7 * (5*num_boxes+num_classes), 7*7 * (5*num_boxes+num_classes))
                 )
 
     def forward(self, input):
