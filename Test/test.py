@@ -35,9 +35,6 @@ LOAD_MODEL_FILE = "Yolo.pth.tar"
 IMG_TEST_DIR = pathlib.Path.cwd() / "dataset/test/images"
 LABEL_TEST_DIR =  pathlib.Path.cwd() / "dataset/test/labels"
 
-IMG_TRAIN_DIR =  pathlib.Path.cwd() / "dataset/train/images"
-LABEL_TRAIN_DIR =  pathlib.Path.cwd() / "dataset/train/labels"
-
 class Compose(object):
     def __init__(self, transforms):
         self.transforms = transforms
