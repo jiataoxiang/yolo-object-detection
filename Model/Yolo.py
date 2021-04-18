@@ -1,3 +1,8 @@
+"""
+The code is adapted from github: https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/object_detection/YOLO/model.py
+with slight modification
+"""
+
 import torch
 import torch.nn as nn
 
