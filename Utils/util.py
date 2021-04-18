@@ -16,16 +16,7 @@ def IoU(predictions, targetLabels):
     Returns:
         tensor: Intersection over union for all examples
     """
-    
-    # preds_topLeft_x = (predictions[..., 0] - predictions[..., 2] / 2).unsqueeze(-1)
-    # preds_topLeft_y = (predictions[..., 1] - predictions[..., 3] / 2).unsqueeze(-1)
-    # preds_bottomRight_x = (predictions[..., 0] + predictions[..., 2] / 2).unsqueeze(-1)
-    # preds_bottomRight_y = (predictions[..., 1] - predictions[..., 3] / 2).unsqueeze(-1)
-    
-    # target_topLeft_x = (targetLabels[..., 0] - targetLabels[..., 2] / 2).unsqueeze(-1)
-    # target_topLeft_y = (targetLabels[..., 1] - targetLabels[..., 3] / 2).unsqueeze(-1)
-    # target_bottomRight_x = (targetLabels[..., 0] + targetLabels[..., 2] / 2).unsqueeze(-1)
-    # target_bottomRight_y = (targetLabels[..., 1] - targetLabels[..., 3] / 2).unsqueeze(-1)
+
     preds_topLeft_x = (predictions[..., 0] - predictions[..., 2] / 2).unsqueeze(-1)
     preds_topLeft_y = (predictions[..., 1] - predictions[..., 3] / 2).unsqueeze(-1)
     preds_bottomRight_x = (predictions[..., 0] + predictions[..., 2] / 2).unsqueeze(-1)
